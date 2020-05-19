@@ -1,183 +1,181 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Music</title>
     <link rel="stylesheet" href="" />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://kit.fontawesome.com/da0878adae.js"
-      crossorigin="anonymous"
-    ></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+    <script src="https://kit.fontawesome.com/da0878adae.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="src/main.css" />
-  </head>
-  <body class="colorBlack">
-    <div id="app">
-      <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a class="navbar-brand" href="#">Navbar</a>
-          <!--  <ul class="navbar-nav mr-auto">			      		    
-			    </ul> -->
-          <form class="form-inline my-2 my-lg-0" @submit.prevent="sendForm">
-            <input
-              class="form-control mr-sm-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-              v-model="search"
-            />
-            <div class="form-group mr-sm-2">
-              <label class="mr-sm-2">By</label>
-              <select class="form-control" v-model="type">
-                <option value="album">Album</option>
-                <option value="song">Song</option>
-              </select>
-            </div>
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-              Search
-            </button>
-          </form>
-        </nav>
-      </header>
-      <div
-        class="container-fluid mt-2"
-        id="cntAlbum"
-        :class="{'d-none': activeMusic == true}"
-      >
-        <template v-if="albums">
-          <div class="row">
-            <a
-              href="#"
-              @click="getMusic(album.collectionId)"
-              class="col-6 col-sm-4 col-md-3"
-              v-for="(album,index) in albums"
-              :key="index"
-            >
-              <div class="card mb-3 shadow-sm">
-                <img
-                  :src="album.artworkUrl100"
-                  class="card-img-top"
-                  alt="..."
-                />
-                <div class="card-body">
-                  <p class="card-title" :title="album.collectionName">
-                    {{album.collectionName}}
-                  </p>
-                  <p :title="album.collectionName">{{album.artistName}}</p>
-                  <p :title="album.collectionName">
-                    Date: {{album.releaseDate.split('T')[0]}}
-                  </p>
-                  <p :title="album.collectionName">
-                    Genre: {{album.primaryGenreName}}
-                  </p>
-                </div>
-              </div>
-            </a>
-          </div>
-          <div class="text-center" v-if="albums.length>0">
-            <button class="btn btn-primary" @click="nextPage">See More</button>
-            <br />
-            <br />
-            <br />
-          </div>
-        </template>
-        <template v-else>
-          <h2 class="text-center p-50">No album found ...</h2>
-        </template>
+</head>
 
-        <template v-if="processing.album">
-          <div class="loading text-center">
-            <div class="d-flex justify-content-center">
-              <div
-                class="spinner-border text-success"
-                style="width: 5rem; height: 5rem;"
-                role="status"
-              >
-                <span class="sr-only">Loading...</span>
-              </div>
+<body>
+
+    <div id='app'>
+
+        <header>
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+
+                <form class="form-inline" action="/action_page.php" @submit.prevent="sendForm">
+
+                    <div class="form-row">
+                        <div class="col">
+                            <input class="form-control mr-sm-2" type="text" placeholder="Genero" v-model="search">
+                        </div>
+                        <div class="col">
+                            <select id="inputState" class="form-control" v-model="type">
+                            <option value="album" selected>Albun</option>
+                            <option value="Song">Song</option>
+                        </select>
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-success" type="submit">Search</button>
+                        </div>
+                    </div>
+
+                </form>
+
+            </nav>
+        </header>
+
+        <div class="album py-5 bg-white">
+
+            <div class="container">
+
+                <div id="cntAlbum" :class="{'d-none': activeMusic == true}">
+
+                    <template v-if="albums">
+
+                    <div class="row">    
+                        <div class="col-md-4"  v-for="(album,index) in albums"
+                        :key="index">
+                            <div class="card mb-4 box-shadow">
+                                <img class="card-img-top"   alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;"  :src="album.artworkUrl100" data-holder-rendered="true">
+                                <div class="card-body">
+
+                                    <p class="card-text" :title="album.collectionName" style="font-size:0.8vw;">Albun: {{album.collectionName}}</p>
+                                    <p class="card-text" :title="album.collectionName">Artista: {{album.artistName}}</p>
+                                    <p class="card-text" :title="album.collectionName"> Date: {{album.releaseDate.split('T')[0]}} </p>
+                                    <p class="card-text":title="album.collectionName">  Genre: {{album.primaryGenreName}} </p>
+
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-outline-primary" @click="getMusic(album.collectionId)">View</button>
+                                        </div>
+                                        <small class="text-muted">Price: {{album.collectionPrice}}</small>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </template>
+
+                    <template v-else>
+                    <div class="col-12">
+                        <h2 class="text-center p-50">No album found ...</h2>
+                    </div>
+                </template>
+
+                    <template v-if="processing.album">
+                    <div class="col-12 text-center">
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border" style="width: 5rem; height: 5rem;" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        <span class="mt-5">Searching...</span>
+                    </div>
+                </template>
+
+                </div>
+
+                <div id="cntMusic" :class="{fadeIn: activeMusic == true,'d-none': activeMusic == false}">
+
+
+                    <div class="row mb-2">
+                        <div class="col-12">
+                            <button class="btn btn-outline-primary" @click="activeMusic = false">
+                                <i class="fas fa-arrow-left"></i> Back
+                            </button>
+                        </div>
+                    </div>
+
+                    <template v-if="processing.music">
+                    <div class="col-12 text-center">
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border" style="width: 5rem; height: 5rem;" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        <span class="mt-5">Searching...</span>
+                    </div>
+                </template>
+
+                    <template v-else>
+
+                    <div class="row py-5">
+
+                        <div class="col-md-12">
+
+                            <div class="row">
+
+                                <div class="col-md-4">
+                                    
+                                    <div class="card mb-4 box-shadow">
+                                        <img class="card-img-top img-fluid"   style="height: 225px; width: 100%; display: block;" :src="imgmusicAlbum" data-holder-rendered="true">
+                                        <div class="card-body">
+                                            <h4>{{musicAlbum}}</h4>
+                                            <h5>{{musicArtist}}</h5>
+                                            <p class="card-text"><small>{{musicGenre}}</small></p>
+                                        </div>
+                                    </div>
+                                      
+                                </div>
+
+                                <div class="col-md-8">
+                                    <div class="table-responsive">
+                                        <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                            <table class="table table-hover">
+                                                <tbody>
+
+                                                    <tr :class="{active: index == active}" v-for="(music,index) in musicTraks"  @click="active = index,play(music.previewUrl)">
+                                                        <td>
+                                                            {{index + 1}} - {{ music.trackName}}
+                                                        </td>    
+                                                    </tr>
+                                                    
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+                                      </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </template>
+
+                </div>
+
             </div>
-            <span class="mt-5">Searching...</span>
-          </div>
-        </template>
-      </div>
-      <div
-        class="container-fluid mt-2"
-        id="cntMusic"
-        :class="{fadeIn: activeMusic == true,'d-none': activeMusic == false}"
-      >
-        <p>
-          <button class="btn btn-outline-primary" @click="activeMusic = false">
-            <i class="fas fa-arrow-left"></i> Back
-          </button>
-        </p>
-        <template v-if="processing.music">
-          <div class="loading text-center">
-            <div class="d-flex justify-content-center">
-              <div
-                class="spinner-border text-success"
-                style="width: 5rem; height: 5rem;"
-                role="status"
-              >
-                <span class="sr-only">Loading...</span>
-              </div>
-            </div>
-            <span class="mt-5">Searching...</span>
-          </div>
-        </template>
-        <template v-else>
-          <div class="row">
-            <div class="col-12 col-sm-4">
-              <div class="card">
-                <img :src="imgmusicAlbum" class="img-fluid" width="100%" />
-              </div>
-            </div>
-            <div class="col-12 col-sm-8">
-              <h4>{{musicAlbum}}</h4>
-              <h5>{{musicArtist}}</h5>
-              <small>{{musicGenre}}</small>
-              <ul class="lis-group list-group-flush group-track mt-3">
-                <li
-                  class="list-group-item item-track"
-                  :class="{active: index == active}"
-                  v-for="(music,index) in musicTraks"
-                  @click="active = index,play(music.previewUrl)"
-                >
-                  <!-- <span></span>							 -->
-                  {{index + 1}} - {{ music.trackName}}
-                </li>
-              </ul>
-            </div>
-          </div>
-        </template>
-      </div>
+
+        </div>
+
     </div>
-    <script
-      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-      crossorigin="anonymous"
-    ></script>
+
+
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="src/main.js"></script>
-  </body>
+
+</body>
+
 </html>
