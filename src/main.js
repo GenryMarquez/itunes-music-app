@@ -75,6 +75,7 @@ app = new Vue({
         async getMusic(dni) {
             this.activeMusic = true;
             this.active = null;
+
             if (this.audio) {
                 this.audio.pause();
                 this.audio = null;
@@ -107,11 +108,19 @@ app = new Vue({
                 });
         },
         play(audio) {
+
+            console.log(audio);
+
             if (this.audio) {
                 this.audio.pause();
             }
             this.audio = new Audio(audio);
             this.audio.play();
+        },
+        stop(audio) {
+
+            this.audio = new Audio(audio);
+            this.audio.stop();
         }
     }
 })

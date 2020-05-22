@@ -114,7 +114,7 @@
                         </div>
                         <span class="mt-5">Searching...</span>
                     </div>
-                </template>
+                    </template>
 
                     <template v-else>
 
@@ -143,9 +143,16 @@
                                             <table class="table table-hover">
                                                 <tbody>
 
-                                                    <tr :class="{active: index == active}" v-for="(music,index) in musicTraks"  @click="active = index,play(music.previewUrl)">
+                                                    <tr :class="{active: index == active}" v-for="(music,index) in musicTraks">
                                                         <td>
                                                             {{index + 1}} - {{ music.trackName}}
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group" role="group" aria-label="Basic example">
+                                                                <button type="button" class="btn btn-app btn-secondary" @click="active = index,play(music.previewUrl)"><i class="fas fa-play"></i></button>
+                                                                <button type="button" class="btn btn-app btn-secondary"><i class="fas fa-pause"></i></button>
+                                                                <button type="button" class="btn btn-app btn-secondary" @click="active = index,stop(music.previewUrl)"><i class="fas fa-stop"></i></button>
+                                                            </div>
                                                         </td>    
                                                     </tr>
                                                     
@@ -159,9 +166,10 @@
                             </div>
 
                         </div>
+
                     </div>
 
-                </template>
+                    </template>
 
                 </div>
 
